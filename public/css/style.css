@@ -297,8 +297,7 @@ footer {
 /* Style dla systemu gwiazdek */
 .star-rating-widget {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -306,23 +305,72 @@ footer {
     font-size: 1.5rem;
     color: #555;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Style dla gwiazdek po najechaniu i dla wszystkich poprzedzających */
-.star-rating-widget:hover .star {
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.selected {
     color: #ffc107;
 }
 
-.star:hover ~ .star {
-    color: #555;
-}
-
-.star.selected,
-.star.selected ~ .star {
-    color: #ffc107;
+.star.hover {
+    color: #fce08d;
 }
 
 .rating-value {
     display: none;
+}
+
+.rating-summary p {
+    font-size: 0.4rem 0;
+}
+
+.rating-summary .static-stars {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.rating-summary .no-rating {
+    color: #888;
+}
+
+.rating-summary p {
+    margin: 0.3rem 0;
+}
+
+.edit-rating-btn {
+    margin-top: 0.75rem;
+    width: 100%
+}
+
+.review-text-box {
+    max-height: 80px;
+    overflow-y: auto;
+    background-color: #333;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #ddd;
+    overflow-wrap: break-word;
+    word-wrap: break-word; 
+}
+
+.review-text-box::-webkit-scrollbar {
+    width: 8px;
+}
+.review-text-box::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 4px;
+}
+.review-text-box::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}
+.review-text-box::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
 }

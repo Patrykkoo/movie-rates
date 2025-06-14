@@ -1,18 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const allStarRatings = document.querySelectorAll('.star-rating-widget');
+    const movieCards = document.querySelectorAll('.movie-card');
 
-    allStarRatings.forEach(widget => {
-        const stars = widget.querySelectorAll('.star');
-        const ratingInput = widget.querySelector('.rating-value');
-        const ratingDisplay = widget.querySelector('.rating-display');
+    movieCards.forEach(card => {
+        const starWidget = card.querySelector('.star-rating-widget');
+        const editButton = card.querySelector('.edit-rating-btn');
+        const form = card.querySelector('.update-form');
+        const summary = card.querySelector('.rating-summary');
 
-        const setStars = (rating) => {
+        if (editButton) {
+            editButton.addEventListener('click', () => {
+                form.style.display = 'block';
+                summary.style.display = 'none';
+            });
+        }
+        
+        if (!starWidget) return;
+
+        const stars = starWidget.querySelectorAll('.star');
+        const ratingInput = form.querySelector('.rating-value');
+        const ratingDisplay = form.querySelector('.rating-display-value');
+
+        const setRating = (rating) => {
             stars.forEach(star => {
-                if (parseInt(star.dataset.value) <= rating) {
-                    star.classList.add('selected');
-                } else {
-                    star.classList.remove('selected');
-                }
+                star.classList.toggle('selected', parseInt(star.dataset.value) <= rating);
             });
         };
 
@@ -21,22 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const value = star.dataset.value;
                 ratingInput.value = value;
                 ratingDisplay.textContent = `${value}/10`;
-                setStars(value);
+                setRating(value);
             });
 
             star.addEventListener('mouseover', () => {
                 const hoverValue = star.dataset.value;
-                stars.forEach(s => {
-                    s.classList.toggle('hover', parseInt(s.dataset.value) <= hoverValue);
+                stars.forEach((s, index) => {
+                    s.classList.toggle('hover', index < hoverValue);
                 });
             });
         });
 
-        widget.addEventListener('mouseout', () => {
+        starWidget.addEventListener('mouseleave', () => {
             stars.forEach(s => s.classList.remove('hover'));
-            setStars(ratingInput.value);
         });
-
-        setStars(ratingInput.value);
     });
 });

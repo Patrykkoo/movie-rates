@@ -2,7 +2,7 @@
 
 <div class="page-intro">
     <h2>Mój Katalog</h2>
-    <p>Oto filmy, które dodałeś do swojej prywatnej kolekcji. Tutaj możesz je oceniać i edytować.</p>
+    <p>Filmy dodane do kolekcji. Tutaj możesz je oceniać i edytować.</p>
 </div>
 
 <div class="movie-grid">
@@ -15,8 +15,30 @@
                     <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
                     
                     <div class="movie-user-data">
-                        <form action="/collection/update/<%= movie.id %>" method="POST" class="update-form">
-                            <div class="form-control-full">
+
+                        <% if (movie.rating) { %>
+                            <div class="rating-summary">
+                                <p><strong>Status:</strong> <%= movie.status %></p>
+                                <p><strong>Twoja ocena:</strong> 
+                                    <span class="static-stars">
+                                        <% for(let i = 1; i <= movie.rating; i++) { %>&#9733;<% } %><% for(let i = movie.rating; i < 10; i++) { %>&#9734;<% } %>
+                                    </span>
+                                    (<%= movie.rating %>/10)
+                                </p>
+                                
+                                <div>
+                                    <strong>Recenzja:</strong>
+                                    <div class="review-text-box">
+                                        <%= movie.review || 'Brak recenzji.' %>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-small edit-rating-btn">Edytuj recenzję</button>
+                            </div>
+                        <% } %>
+
+                        <form action="/collection/update/<%= movie.id %>" method="POST" class="update-form" style="<%= movie.rating ? 'display: none;' : 'display: block;' %>">
+                           <div class="form-control-full">
                                 <label for="status-<%= movie.id %>">Status</label>
                                 <select name="status" id="status-<%= movie.id %>">
                                     <option value="Do obejrzenia" <%= movie.status === 'Do obejrzenia' ? 'selected' : '' %>>Do obejrzenia</option>
@@ -26,11 +48,11 @@
                             </div>
 
                             <div class="form-control-full">
-                                <label>Ocena <span class="rating-display"><%= movie.rating || 0 %>/10</span></label>
+                                <label>Ocena <span class="rating-display-value"><%= movie.rating || 0 %>/10</span></label>
                                 <div class="star-rating-widget">
                                     <input type="hidden" name="rating" class="rating-value" value="<%= movie.rating || 0 %>">
                                     <% for(let i = 1; i <= 10; i++) { %>
-                                        <span class="star" data-value="<%= i %>">&#9733;</span>
+                                        <span class="star <%= (movie.rating && i <= movie.rating) ? 'selected' : '' %>" data-value="<%= i %>">&#9733;</span>
                                     <% } %>
                                 </div>
                             </div>
@@ -39,7 +61,7 @@
                                 <label for="review-<%= movie.id %>">Recenzja</label>
                                 <textarea name="review" id="review-<%= movie.id %>" rows="3"><%= movie.review || '' %></textarea>
                             </div>
-                            <button type="submit" class="btn btn-small">Zapisz zmiany</button>
+                            <button type="submit" class="btn btn-small">Zapisz recenzję</button>
                         </form>
                     </div>
                 </div>

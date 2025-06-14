@@ -31,6 +31,24 @@
     "actors": "Patton Oswalt, Ian Holm, Lou Romano, Brian Dennehy",
     "plot": "A rat who can cook makes an unusual alliance with a young kitchen worker at a famous restaurant.",
     "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTMzODU0NTkxMF5BMl5BanBnXkFtZTcwMjQ4MzMzMw@@._V1_SX300.jpg",
+    "status": "Obejrzany",
+    "rating": "8",
+    "review": "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test"
+  },
+  {
+    "id": 10,
+    "title": "Stardust",
+    "year": "2007",
+    "runtime": "127",
+    "genres": [
+      "Adventure",
+      "Family",
+      "Fantasy"
+    ],
+    "director": "Matthew Vaughn",
+    "actors": "Ian McKellen, Bimbo Hart, Alastair MacIntosh, David Kelly",
+    "plot": "In a countryside town bordering on a magical land, a young man makes a promise to his beloved that he'll retrieve a fallen star by venturing into the magical realm.",
+    "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjkyMTE1OTYwNF5BMl5BanBnXkFtZTcwMDIxODYzMw@@._V1_SX300.jpg",
     "status": "Do obejrzenia",
     "rating": null,
     "review": ""
