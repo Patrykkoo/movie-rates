@@ -104,3 +104,115 @@ footer {
     margin-top: auto;
     font-size: 0.9rem;
 }
+
+/* Style dla przycisków */
+.btn {
+    display: inline-block;
+    background-color: #e50914;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background-color: #f6121d;
+}
+
+/* Style dla formularza dodawania filmu */
+.add-movie-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.form-control {
+    margin-bottom: 1.5rem;
+}
+
+.form-control label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.form-control input,
+.form-control textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+    outline: none;
+    border-color: #e50914;
+    box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
+}
+
+.movie-plot {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #ccc;
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+/* Style dla sekcji z danymi użytkownika i formularzem aktualizacji */
+.movie-user-data {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+.update-form .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.update-form .form-control-inline {
+    flex: 1;
+}
+
+.update-form label {
+    display: block;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 0.25rem;
+}
+
+.update-form input,
+.update-form select,
+.update-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.update-form .btn-small {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}

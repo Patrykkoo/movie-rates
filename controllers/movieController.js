@@ -9,6 +9,41 @@ const getHomePage = (req, res) => {
     });
 };
 
+// Renderowanie strony z formularzem
+const getAddMoviePage = (req, res) => {
+    res.render('add-movie', {
+        pageTitle: 'Dodaj nowy film'
+    });
+};
+
+// Obsługa danych z formularza
+const postAddMovie = (req, res) => {
+    const { title, director, year, posterUrl, plot } = req.body;
+
+    const newMovie = {
+        title,
+        director,
+        year,
+        posterUrl,
+        plot,
+        genres: []
+    };
+
+    Movie.save(newMovie);
+    res.redirect('/');
+};
+
+const postUpdateMovie = (req, res) => {
+    const { id } = req.params;
+    const { status, rating, review } = req.body();
+
+    Movie.update(id, { status, rating, review });
+    res.redirect('/');
+}
+
 module.exports = {
-    getHomePage
+    getHomePage,
+    getAddMoviePage,
+    postAddMovie,
+    postUpdateMovie
 };

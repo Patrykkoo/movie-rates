@@ -1,3 +1,4 @@
+<!-- views/index.ejs -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -11,30 +12,51 @@
     <header>
         <h1>Movierates</h1>
         <p>Twoja osobista kolekcja filmów</p>
+        <a href="/add-movie" class="btn">Dodaj nowy film</a>
     </header>
 
     <main>
         <div class="movie-grid">
-            
             <% if (movies.length > 0) { %>
                 <% movies.forEach(movie => { %>
                     <div class="movie-card">
-                        <% if (movie.posterUrl) { %>
-                            <img src="<%= movie.posterUrl %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster">
-                        <% } else { %>
-                            <div class="poster-placeholder">Brak plakatu</div>
-                        <% } %>
+                        <img src="<%= movie.posterUrl || 'https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu' %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster" onerror="this.onerror=null;this.src='https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu';">
+                        
                         <div class="movie-details">
                             <h2 class="movie-title"><%= movie.title %></h2>
                             <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
                             <p class="movie-plot"><%= movie.plot %></p>
+
+                            <!-- Sekcja z danymi i formularzem aktualizacji -->
+                            <div class="movie-user-data">
+                                <form action="/update-movie/<%= movie.id %>" method="POST" class="update-form">
+                                    <div class="form-row">
+                                        <div class="form-control-inline">
+                                            <label for="status-<%= movie.id %>">Status</label>
+                                            <select name="status" id="status-<%= movie.id %>">
+                                                <option value="Do obejrzenia" <%= movie.status === 'Do obejrzenia' ? 'selected' : '' %>>Do obejrzenia</option>
+                                                <option value="W trakcie" <%= movie.status === 'W trakcie' ? 'selected' : '' %>>W trakcie</option>
+                                                <option value="Obejrzany" <%= movie.status === 'Obejrzany' ? 'selected' : '' %>>Obejrzany</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-control-inline">
+                                            <label for="rating-<%= movie.id %>">Ocena (1-10)</label>
+                                            <input type="number" name="rating" id="rating-<%= movie.id %>" min="1" max="10" value="<%= movie.rating || '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-control-full">
+                                        <label for="review-<%= movie.id %>">Recenzja</label>
+                                        <textarea name="review" id="review-<%= movie.id %>" rows="3"><%= movie.review || '' %></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-small">Zapisz zmiany</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 <% }); %>
             <% } else { %>
                 <p>Nie znaleziono żadnych filmów w kolekcji.</p>
             <% } %>
-
         </div>
     </main>
 
