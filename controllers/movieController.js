@@ -35,7 +35,7 @@ const postAddMovie = (req, res) => {
 
 const postUpdateMovie = (req, res) => {
     const { id } = req.params;
-    const { status, rating, review } = req.body();
+    const { status, rating, review } = req.body;
 
     Movie.update(id, { status, rating, review });
     res.redirect('/');
