@@ -4,17 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
     <header>
-        <h1>Witaj w Movierates!</h1>
+        <h1>Movierates</h1>
+        <p>Twoja osobista kolekcja filmów</p>
     </header>
 
     <main>
-        <p>Strona w budowie. Wkrótce pojawi się tutaj Twoja kolekcja filmów.</p>
-        </main>
+        <div class="movie-grid">
+            
+            <% if (movies.length > 0) { %>
+                <% movies.forEach(movie => { %>
+                    <div class="movie-card">
+                        <% if (movie.posterUrl) { %>
+                            <img src="<%= movie.posterUrl %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster">
+                        <% } else { %>
+                            <div class="poster-placeholder">Brak plakatu</div>
+                        <% } %>
+                        <div class="movie-details">
+                            <h2 class="movie-title"><%= movie.title %></h2>
+                            <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
+                            <p class="movie-plot"><%= movie.plot %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>Nie znaleziono żadnych filmów w kolekcji.</p>
+            <% } %>
+
+        </div>
+    </main>
 
     <footer>
         <p>&copy; 2025 Movierates</p>
