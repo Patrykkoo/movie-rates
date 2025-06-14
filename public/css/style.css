@@ -216,3 +216,53 @@ footer {
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
+
+/* Header layout */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: white;
+}
+
+.btn-nav {
+    margin-top: 0;
+}
+
+/* Intro text on pages */
+.page-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.page-intro h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Card actions */
+.card-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* Empty collection info */
+.empty-collection-info {
+    text-align: center;
+    grid-column: 1 / -1;
+    font-size: 1.2rem;
+}
+.empty-collection-info a {
+    color: #e50914;
+    font-weight: bold;
+}

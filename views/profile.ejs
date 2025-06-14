@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+
+<div class="page-intro">
+    <h2>Mój Katalog</h2>
+    <p>Oto filmy, które dodałeś do swojej prywatnej kolekcji. Tutaj możesz je oceniać i edytować.</p>
+</div>
+
+<div class="movie-grid">
+    <% if (collectionMovies.length > 0) { %>
+        <% collectionMovies.forEach(movie => { %>
+            <div class="movie-card">
+                <img src="<%= movie.posterUrl || 'https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu' %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster" onerror="this.onerror=null;this.src='https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu';">
+                <div class="movie-details">
+                    <h2 class="movie-title"><%= movie.title %></h2>
+                    <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
+                    
+                    <div class="movie-user-data">
+                        <p><strong>Status:</strong> <%= movie.status %></p>
+                        <p><strong>Ocena:</strong> <%= movie.rating ? movie.rating + '/10' : 'Brak' %></p>
+                        <p><strong>Recenzja:</strong> <%= movie.review || 'Brak' %></p>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p class="empty-collection-info">Twój katalog jest pusty. Przejdź na <a href="/">stronę główną</a>, aby dodać filmy.</p>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

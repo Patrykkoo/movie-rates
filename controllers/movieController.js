@@ -1,49 +1,55 @@
 const Movie = require('../models/movie');
 
+// Wyświetla globalną bibliotekę
 const getHomePage = (req, res) => {
-    const movies = Movie.fetchAll();
-
     res.render('index', {
-        pageTitle: 'Movierates - Twoja kolekcja filmów',
-        movies: movies
+        pageTitle: 'Movierates - Biblioteka Filmów',
+        movies: Movie.fetchAll()
     });
 };
 
-// Renderowanie strony z formularzem
-const getAddMoviePage = (req, res) => {
-    res.render('add-movie', {
-        pageTitle: 'Dodaj nowy film'
+// Wyświetla profil użytkownika z jego kolekcją
+const getProfilePage = (req, res) => {
+    res.render('profile', {
+        pageTitle: 'Mój Katalog Filmów',
+        collectionMovies: Movie.fetchCollection()
     });
 };
 
-// Obsługa danych z formularza
-const postAddMovie = (req, res) => {
-    const { title, director, year, posterUrl, plot } = req.body;
-
-    const newMovie = {
-        title,
-        director,
-        year,
-        posterUrl,
-        plot,
-        genres: []
-    };
-
-    Movie.save(newMovie);
+// Dodaje film do kolekcji użytkownika
+const postAddToCollection = (req, res) => {
+    const movieId = req.params.id;
+    Movie.addToCollection(movieId);
     res.redirect('/');
 };
 
-const postUpdateMovie = (req, res) => {
+// Aktualizuje film w kolekcji użytkownika
+const postUpdateMovieInCollection = (req, res) => {
     const { id } = req.params;
     const { status, rating, review } = req.body;
+    Movie.updateInCollection(id, { status, rating, review });
+    res.redirect('/profile');
+};
 
-    Movie.update(id, { status, rating, review });
+// Wyświetla formularz dodawania filmu do bazy
+const getAddMoviePage = (req, res) => {
+    res.render('add-movie', {
+        pageTitle: 'Dodaj film do Bazy'
+    });
+};
+
+// Dodaje film do bazy
+const postAddMovie = (req, res) => {
+    const { title, director, year, posterUrl, plot } = req.body;
+    Movie.save({ title, director, year, posterUrl, plot });
     res.redirect('/');
-}
+};
 
 module.exports = {
     getHomePage,
+    getProfilePage,
+    postAddToCollection,
+    postUpdateMovieInCollection,
     getAddMoviePage,
-    postAddMovie,
-    postUpdateMovie
+    postAddMovie
 };

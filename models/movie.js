@@ -3,28 +3,31 @@ const path = require('path');
 const crypto = require('crypto');
 
 const dbPath = path.join(__dirname, '..', 'data', 'movieDB.json');
+const collectionPath = path.join(__dirname, '..', 'data', 'user-collection.json');
 
-const readDb = () => {
+const readDb = (filePath) => {
     try {
-        const fileContent = fs.readFileSync(dbPath, 'utf-8');
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+        if (fileContent.trim() === '') {
+            return filePath.includes('user-collection') ? [] : { genres: [], movies: [] };
+        }
         return JSON.parse(fileContent);
     } catch (error) {
-        console.error("Błąd podczas odczytu bazy filmów:", error);
-        return { genres: [], movies: [] };
+        return filePath.includes('user-collection') ? [] : { genres: [], movies: [] };
     }
 };
 
-const writeDb = (data) => {
+const writeDb = (filePath, data) => {
     try {
-        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     } catch (error) {
-        console.error("Błąd podczas zapisywania do bazy filmów", error);
+        console.error(`Błąd podczas zapisywania do pliku ${filePath}:`, error);
     }
 };
 
 class Movie {
     static fetchAll() {
-        return readDb().movies || [];
+        return readDb(dbPath).movies || [];
     }
 
     static findById(id) {
@@ -32,27 +35,42 @@ class Movie {
         return movies.find(m => m.id.toString() === id.toString());
     }
 
-    static update(id, updateMovieData) {
-        const db = readDb();
-        const movieIndex = db.movies.findIndex(m => m.id.toString() === id.toString());
+    static save(movie) {
+        const db = readDb(dbPath);
+        movie.id = crypto.randomUUID();
+        db.movies.push(movie);
+        writeDb(dbPath, db);
+    }
 
-        if (movieIndex > -1) {
-            const movie = db.movies[movieIndex];
-            db.movies[movieIndex] = { ...movie, ...updatedMovieData };
-            writeDb(db);
+    static fetchCollection() {
+        return readDb(collectionPath);
+    }
+
+    static addToCollection(movieId) {
+        const movieToAdd = this.findById(movieId);
+        if (!movieToAdd) return;
+
+        const collection = this.fetchCollection();
+        const isAlreadyInCollection = collection.some(m => m.id.toString() === movieId.toString());
+
+        if (!isAlreadyInCollection) {
+            movieToAdd.status = 'Do obejrzenia';
+            movieToAdd.rating = null;
+            movieToAdd.review = '';
+            
+            collection.push(movieToAdd);
+            writeDb(collectionPath, collection);
         }
     }
 
-    static save(movie) {
-        const db = readDb();
-
-        movie.id = crypto.randomUUID();
-        movie.status = 'Do obejrzenia';
-        movie.rating = movie.rating || null;
-        movie.review = movie.review || '';
+    static updateInCollection(id, updatedData) {
+        const collection = this.fetchCollection();
+        const movieIndex = collection.findIndex(m => m.id.toString() === id.toString());
         
-        db.movies.push(movie);
-        writeDb(db);
+        if (movieIndex > -1) {
+            collection[movieIndex] = { ...collection[movieIndex], ...updatedData };
+            writeDb(collectionPath, collection);
+        }
     }
 }
 
