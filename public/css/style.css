@@ -217,7 +217,6 @@ footer {
     margin-top: 0.5rem;
 }
 
-/* Header layout */
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -236,7 +235,6 @@ footer {
     margin-top: 0;
 }
 
-/* Intro text on pages */
 .page-intro {
     text-align: center;
     margin-bottom: 2rem;
@@ -246,7 +244,6 @@ footer {
     margin-bottom: 0.5rem;
 }
 
-/* Card actions */
 .card-actions {
     margin-top: auto;
     padding-top: 1rem;
@@ -256,7 +253,6 @@ footer {
     width: 100%;
 }
 
-/* Empty collection info */
 .empty-collection-info {
     text-align: center;
     grid-column: 1 / -1;
@@ -265,4 +261,68 @@ footer {
 .empty-collection-info a {
     color: #e50914;
     font-weight: bold;
+}
+
+.update-form .form-control-full {
+    margin-bottom: 0.75rem;
+}
+
+.update-form label {
+    display: block;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 0.25rem;
+}
+
+.update-form input,
+.update-form select,
+.update-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.update-form .btn-small {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Style dla systemu gwiazdek */
+.star-rating-widget {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.star {
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* Style dla gwiazdek po najechaniu i dla wszystkich poprzedzających */
+.star-rating-widget:hover .star {
+    color: #ffc107;
+}
+
+.star:hover ~ .star {
+    color: #555;
+}
+
+.star.selected,
+.star.selected ~ .star {
+    color: #ffc107;
+}
+
+.rating-value {
+    display: none;
 }

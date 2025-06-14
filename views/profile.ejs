@@ -15,9 +15,32 @@
                     <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
                     
                     <div class="movie-user-data">
-                        <p><strong>Status:</strong> <%= movie.status %></p>
-                        <p><strong>Ocena:</strong> <%= movie.rating ? movie.rating + '/10' : 'Brak' %></p>
-                        <p><strong>Recenzja:</strong> <%= movie.review || 'Brak' %></p>
+                        <form action="/collection/update/<%= movie.id %>" method="POST" class="update-form">
+                            <div class="form-control-full">
+                                <label for="status-<%= movie.id %>">Status</label>
+                                <select name="status" id="status-<%= movie.id %>">
+                                    <option value="Do obejrzenia" <%= movie.status === 'Do obejrzenia' ? 'selected' : '' %>>Do obejrzenia</option>
+                                    <option value="W trakcie" <%= movie.status === 'W trakcie' ? 'selected' : '' %>>W trakcie</option>
+                                    <option value="Obejrzany" <%= movie.status === 'Obejrzany' ? 'selected' : '' %>>Obejrzany</option>
+                                </select>
+                            </div>
+
+                            <div class="form-control-full">
+                                <label>Ocena <span class="rating-display"><%= movie.rating || 0 %>/10</span></label>
+                                <div class="star-rating-widget">
+                                    <input type="hidden" name="rating" class="rating-value" value="<%= movie.rating || 0 %>">
+                                    <% for(let i = 1; i <= 10; i++) { %>
+                                        <span class="star" data-value="<%= i %>">&#9733;</span>
+                                    <% } %>
+                                </div>
+                            </div>
+                            
+                            <div class="form-control-full">
+                                <label for="review-<%= movie.id %>">Recenzja</label>
+                                <textarea name="review" id="review-<%= movie.id %>" rows="3"><%= movie.review || '' %></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-small">Zapisz zmiany</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -26,5 +49,7 @@
         <p class="empty-collection-info">Twój katalog jest pusty. Przejdź na <a href="/">stronę główną</a>, aby dodać filmy.</p>
     <% } %>
 </div>
+
+<script src="/js/star-rating.js"></script>
 
 <%- include('partials/footer') %>
