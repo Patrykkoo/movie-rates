@@ -49,6 +49,22 @@
     "actors": "Ian McKellen, Bimbo Hart, Alastair MacIntosh, David Kelly",
     "plot": "In a countryside town bordering on a magical land, a young man makes a promise to his beloved that he'll retrieve a fallen star by venturing into the magical realm.",
     "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjkyMTE1OTYwNF5BMl5BanBnXkFtZTcwMDIxODYzMw@@._V1_SX300.jpg",
+    "status": "Obejrzany",
+    "rating": "5",
+    "review": "nhbjvgtfctrchgjhbkjn,"
+  },
+  {
+    "id": 42,
+    "title": "The Hangover",
+    "year": "2009",
+    "runtime": "100",
+    "genres": [
+      "Comedy"
+    ],
+    "director": "Todd Phillips",
+    "actors": "Bradley Cooper, Ed Helms, Zach Galifianakis, Justin Bartha",
+    "plot": "Three buddies wake up from a bachelor party in Las Vegas, with no memory of the previous night and the bachelor missing. They make their way around the city in order to find their friend before his wedding.",
+    "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTU1MDA1MTYwMF5BMl5BanBnXkFtZTcwMDcxMzA1Mg@@._V1_SX300.jpg",
     "status": "Do obejrzenia",
     "rating": null,
     "review": ""
