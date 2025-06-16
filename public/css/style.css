@@ -1,3 +1,5 @@
+/* Layout i style ogólne */
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
@@ -9,6 +11,13 @@ body {
     min-height: 100vh;
 }
 
+main {
+    flex-grow: 1;
+    width: 95%;
+    max-width: 1400px;
+    margin: 2rem auto;
+}
+
 header {
     background-color: #111;
     color: white;
@@ -17,26 +26,63 @@ header {
     border-bottom: 2px solid #e50914;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 header h1 {
     margin: 0;
     font-size: 2.5rem;
 }
 
-main {
-    flex-grow: 1;
-    width: 95%;
-    max-width: 1400px;
-    margin: 2rem auto;
+footer {
+    background-color: #111;
+    color: #777;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    font-size: 0.9rem;
 }
 
-/* Style dla siatki filmów */
+.logo-link {
+    text-decoration: none;
+    color: white;
+}
+
+.page-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-intro h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-collection-info {
+    text-align: center;
+    grid-column: 1 / -1;
+    font-size: 1.2rem;
+}
+
+.empty-collection-info a {
+    color: #e50914;
+    font-weight: bold;
+}
+
+/* Style komponentów */
+
 .movie-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
 }
 
-/* Style dla pojedynczej karty filmu */
 .movie-card {
     background-color: #2a2a2a;
     border-radius: 8px;
@@ -94,18 +140,15 @@ main {
     line-height: 1.5;
     color: #ccc;
     flex-grow: 1;
+    margin-bottom: 1rem;
 }
 
-footer {
-    background-color: #111;
-    color: #777;
-    text-align: center;
-    padding: 1rem;
+.movie-user-data {
     margin-top: auto;
-    font-size: 0.9rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
 }
 
-/* Style dla przycisków */
 .btn {
     display: inline-block;
     background-color: #e50914;
@@ -125,7 +168,28 @@ footer {
     background-color: #f6121d;
 }
 
-/* Style dla formularza dodawania filmu */
+.btn-nav {
+    margin-top: 0;
+}
+
+.btn-small {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.card-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Style formularzy */
+
 .add-movie-form {
     max-width: 600px;
     margin: 2rem auto;
@@ -165,21 +229,6 @@ footer {
     box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
 }
 
-.movie-plot {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: #ccc;
-    flex-grow: 1;
-    margin-bottom: 1rem;
-}
-
-/* Style dla sekcji z danymi użytkownika i formularzem aktualizacji */
-.movie-user-data {
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid #444;
-}
-
 .update-form .form-row {
     display: flex;
     gap: 1rem;
@@ -188,79 +237,6 @@ footer {
 
 .update-form .form-control-inline {
     flex: 1;
-}
-
-.update-form label {
-    display: block;
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-bottom: 0.25rem;
-}
-
-.update-form input,
-.update-form select,
-.update-form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #333;
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #e0e0e0;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-}
-
-.update-form .btn-small {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 95%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.logo-link {
-    text-decoration: none;
-    color: white;
-}
-
-.btn-nav {
-    margin-top: 0;
-}
-
-.page-intro {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.page-intro h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.card-actions {
-    margin-top: auto;
-    padding-top: 1rem;
-}
-
-.btn-full {
-    width: 100%;
-}
-
-.empty-collection-info {
-    text-align: center;
-    grid-column: 1 / -1;
-    font-size: 1.2rem;
-}
-.empty-collection-info a {
-    color: #e50914;
-    font-weight: bold;
 }
 
 .update-form .form-control-full {
@@ -287,14 +263,8 @@ footer {
     box-sizing: border-box;
 }
 
-.update-form .btn-small {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-}
+/* Style widgetów */
 
-/* Style dla systemu gwiazdek */
 .star-rating-widget {
     display: flex;
     justify-content: flex-start;
@@ -324,8 +294,8 @@ footer {
     display: none;
 }
 
-.rating-summary p {
-    font-size: 0.4rem 0;
+.rating-summary {
+    font-size: 0.9rem;
 }
 
 .rating-summary .static-stars {
@@ -338,12 +308,12 @@ footer {
 }
 
 .rating-summary p {
-    margin: 0.3rem 0;
+    margin: 0.4rem 0;
 }
 
 .edit-rating-btn {
     margin-top: 0.75rem;
-    width: 100%
+    width: 100%;
 }
 
 .review-text-box {
@@ -363,14 +333,17 @@ footer {
 .review-text-box::-webkit-scrollbar {
     width: 8px;
 }
+
 .review-text-box::-webkit-scrollbar-track {
     background: #333;
     border-radius: 4px;
 }
+
 .review-text-box::-webkit-scrollbar-thumb {
     background-color: #555;
     border-radius: 4px;
 }
+
 .review-text-box::-webkit-scrollbar-thumb:hover {
     background-color: #777;
 }
