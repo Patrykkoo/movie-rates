@@ -21,8 +21,8 @@ Do uruchomienia aplikacji wymagany jest **Node.js** (zalecana wersja v18.x lub n
 
 1.  **Klonowanie Repozytorium**
     ```bash
-    git clone <adres-twojego-repozytorium>
-    cd <nazwa-folderu-projektu>
+    git clone https://github.com/Patrykkoo/movie-rates
+    cd movie-rates
     ```
 
 2.  **Instalacja Zależności**
