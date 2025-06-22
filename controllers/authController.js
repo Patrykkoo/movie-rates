@@ -1,14 +1,24 @@
 const User = require('../models/user');
 
 exports.getRegisterPage = (req, res) => {
-    res.render('register', { pageTitle: 'Rejestracja' });
+    const errorMessage = req.session.errorMessage;
+    delete req.session.errorMessage;
+
+    res.render('register', {
+        pageTitle: 'Rejestracja',
+        errorMessage: errorMessage
+    });
 };
 
 exports.postRegister = (req, res) => {
     const { username, password } = req.body;
     User.create(username, password, (err, user) => {
         if (err) {
-            console.error(err);
+            if (err.code === 'SQLITE_CONSTRAINT') {
+                req.session.errorMessage = 'Użytkownik o takiej nazwie już istnieje.';
+            } else {
+                req.session.errorMessage = 'Wystąpił błąd podczas rejestracji.';
+            }
             return res.redirect('/register');
         }
         res.redirect('/login');
@@ -16,17 +26,25 @@ exports.postRegister = (req, res) => {
 };
 
 exports.getLoginPage = (req, res) => {
-    res.render('login', { pageTitle: 'Logowanie' });
+    const errorMessage = req.session.errorMessage;
+    delete req.session.errorMessage;
+
+    res.render('login', {
+        pageTitle: 'Logowanie',
+        errorMessage: errorMessage
+    });
 };
 
 exports.postLogin = (req, res) => {
     const { username, password } = req.body;
     User.findByUsername(username, (err, user) => {
         if (err || !user) {
+            req.session.errorMessage = 'Nieprawidłowy login lub hasło.';
             return res.redirect('/login');
         }
         User.verifyPassword(password, user.password, (err, isMatch) => {
             if (err || !isMatch) {
+                req.session.errorMessage = 'Nieprawidłowy login lub hasło.';
                 return res.redirect('/login');
             }
             req.session.userId = user.id;

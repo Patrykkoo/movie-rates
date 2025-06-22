@@ -368,3 +368,14 @@ footer {
 .btn-logout:hover {
     background-color: #777;
 }
+
+.error-message {
+    background-color: #ffdddd;
+    border: 1px solid #f44336;
+    color: #a94442;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}

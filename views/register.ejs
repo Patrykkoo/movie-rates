@@ -2,6 +2,13 @@
 
 <form class="add-movie-form" action="/register" method="POST">
     <h2>Rejestracja</h2>
+
+    <% if (errorMessage) { %>
+        <div class="error-message">
+            <%= errorMessage %>
+        </div>
+    <% } %>
+
     <div class="form-control">
         <label for="username">Nazwa użytkownika</label>
         <input type="text" id="username" name="username" required>
