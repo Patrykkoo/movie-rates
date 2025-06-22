@@ -47,6 +47,6 @@ exports.postUpdateMovieStatus = (req, res) => {
         if (err) {
             return res.status(500).send("Błąd podczas dodawania filmu do kolekcji.");
         }
-        res.redirect('back');
+        res.redirect('/');
     });
 };
