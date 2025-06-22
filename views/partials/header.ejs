@@ -13,7 +13,15 @@
                 <h1>Movierates</h1>
             </a>
             <nav class="main-nav">
-                <a href="/profile" class="btn btn-nav">Mój Katalog</a>
+                <% if (isAuthenticated) { %>
+                    <span class="welcome-user">Witaj, <%= username %>!</span>
+                    <a href="/profile" class="btn btn-nav">Mój Katalog</a>
+                    <form action="/logout" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-nav btn-logout">Wyloguj</button>
+                    </form>
+                <% } else { %>
+                    <a href="/login" class="btn btn-nav">Logowanie</a>
+                <% } %>
             </nav>
         </div>
     </header>

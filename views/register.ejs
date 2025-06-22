@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<form class="add-movie-form" action="/register" method="POST">
+    <h2>Rejestracja</h2>
+    <div class="form-control">
+        <label for="username">Nazwa użytkownika</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-control">
+        <label for="password">Hasło</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn">Zarejestruj się</button>
+    <p class="auth-switch">Masz już konto? <a href="/login">Zaloguj się</a></p>
+</form>
+
+<%- include('partials/footer') %>
