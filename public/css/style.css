@@ -79,6 +79,7 @@ footer {
 .empty-collection-info a {
     color: #e50914;
     font-weight: bold;
+    text-decoration: none;
 }
 
 /* Style komponentów */
