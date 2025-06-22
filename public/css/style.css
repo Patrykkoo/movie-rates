@@ -388,3 +388,70 @@ footer {
     text-align: center;
     font-weight: bold;
 }
+
+/* Dodaj na końcu pliku style.css */
+
+.card-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Odstęp między przyciskami */
+}
+
+.btn-secondary {
+    background-color: #555;
+}
+.btn-secondary:hover {
+    background-color: #777;
+}
+
+.collection-section {
+    margin-bottom: 3rem;
+}
+
+.collection-section h3 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tabs-container {
+    width: 100%;
+}
+
+.tab-nav {
+    display: flex;
+    border-bottom: 2px solid #333;
+    margin-bottom: 2rem;
+}
+
+.tab-link {
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+.tab-link:hover {
+    color: #888;
+}
+.tab-link.active {
+    color: #e50914;
+    border-bottom-color: #e50914;
+}
+
+.tab-pane {
+    display: none;
+}
+.tab-pane.active {
+    display: block;
+}

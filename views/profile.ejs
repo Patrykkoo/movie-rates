@@ -2,76 +2,55 @@
 
 <div class="page-intro">
     <h2>Mój Katalog</h2>
-    <p>Filmy dodane do kolekcji. Tutaj możesz je oceniać i edytować.</p>
+    <p>Twoje spersonalizowane listy filmów</p>
 </div>
 
-<div class="movie-grid">
-    <% if (collectionMovies.length > 0) { %>
-        <% collectionMovies.forEach(movie => { %>
-            <div class="movie-card">
-                <img src="<%= movie.posterUrl || 'https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu' %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster" onerror="this.onerror=null;this.src='https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu';">
-                <div class="movie-details">
-                    <h2 class="movie-title"><%= movie.title %></h2>
-                    <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
-                    
-                    <div class="movie-user-data">
+<div class="tabs-container">
+    <nav class="tab-nav">
+        <button class="tab-link active" data-tab="to-watch-pane">Do obejrzenia</button>
+        <button class="tab-link" data-tab="watched-pane">Obejrzane</button>
+    </nav>
 
-                        <% if (movie.rating) { %>
-                            <div class="rating-summary">
-                                <p><strong>Status:</strong> <%= movie.status %></p>
-                                <p><strong>Twoja ocena:</strong> 
-                                    <span class="static-stars">
-                                        <% for(let i = 1; i <= movie.rating; i++) { %>&#9733;<% } %><% for(let i = movie.rating; i < 10; i++) { %>&#9734;<% } %>
-                                    </span>
-                                    (<%= movie.rating %>/10)
-                                </p>
-                                
-                                <div>
-                                    <strong>Recenzja:</strong>
-                                    <div class="review-text-box">
-                                        <%= movie.review || 'Brak recenzji.' %>
-                                    </div>
-                                </div>
-
-                                <button type="button" class="btn btn-small edit-rating-btn">Edytuj recenzję</button>
+    <div class="tab-content">
+        <div id="to-watch-pane" class="tab-pane active">
+            <div class="movie-grid">
+                <% if (toWatchMovies.length > 0) { %>
+                    <% toWatchMovies.forEach(movie => { %>
+                        <div class="movie-card">
+                            <img src="<%= movie.posterUrl || 'https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu' %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster" onerror="this.onerror=null;this.src='https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu';">
+                            <div class="movie-details">
+                                <h2 class="movie-title"><%= movie.title %></h2>
+                                <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
                             </div>
-                        <% } %>
-
-                        <form action="/collection/update/<%= movie.id %>" method="POST" class="update-form" style="<%= movie.rating ? 'display: none;' : 'display: block;' %>">
-                           <div class="form-control-full">
-                                <label for="status-<%= movie.id %>">Status</label>
-                                <select name="status" id="status-<%= movie.id %>">
-                                    <option value="Do obejrzenia" <%= movie.status === 'Do obejrzenia' ? 'selected' : '' %>>Do obejrzenia</option>
-                                    <option value="W trakcie" <%= movie.status === 'W trakcie' ? 'selected' : '' %>>W trakcie</option>
-                                    <option value="Obejrzany" <%= movie.status === 'Obejrzany' ? 'selected' : '' %>>Obejrzany</option>
-                                </select>
-                            </div>
-
-                            <div class="form-control-full">
-                                <label>Ocena <span class="rating-display-value"><%= movie.rating || 0 %>/10</span></label>
-                                <div class="star-rating-widget">
-                                    <input type="hidden" name="rating" class="rating-value" value="<%= movie.rating || 0 %>">
-                                    <% for(let i = 1; i <= 10; i++) { %>
-                                        <span class="star <%= (movie.rating && i <= movie.rating) ? 'selected' : '' %>" data-value="<%= i %>">&#9733;</span>
-                                    <% } %>
-                                </div>
-                            </div>
-                            
-                            <div class="form-control-full">
-                                <label for="review-<%= movie.id %>">Recenzja</label>
-                                <textarea name="review" id="review-<%= movie.id %>" rows="3"><%= movie.review || '' %></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-small">Zapisz recenzję</button>
-                        </form>
-                    </div>
-                </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="empty-collection-info">Brak filmów na liście "Do obejrzenia"</p>
+                <% } %>
             </div>
-        <% }); %>
-    <% } else { %>
-        <p class="empty-collection-info">Twój katalog jest pusty. Przejdź na <a href="/">stronę główną</a>, aby dodać filmy.</p>
-    <% } %>
+        </div>
+
+        <div id="watched-pane" class="tab-pane">
+            <div class="movie-grid">
+                <% if (watchedMovies.length > 0) { %>
+                    <% watchedMovies.forEach(movie => { %>
+                        <div class="movie-card">
+                            <img src="<%= movie.posterUrl || 'https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu' %>" alt="Plakat filmu <%= movie.title %>" class="movie-poster" onerror="this.onerror=null;this.src='https://placehold.co/400x600/2a2a2a/e0e0e0?text=Brak+plakatu';">
+                            <div class="movie-details">
+                                <h2 class="movie-title"><%= movie.title %></h2>
+                                <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="empty-collection-info">Brak filmów na liście "Obejrzane"</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script src="/js/star-rating.js"></script>
 
 <%- include('partials/footer') %>
+
+<script src="/js/tabs.js"></script>
