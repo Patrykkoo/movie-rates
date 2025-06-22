@@ -18,6 +18,12 @@ main {
     margin: 2rem auto;
 }
 
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 header {
     background-color: #111;
     color: white;
@@ -162,6 +168,8 @@ footer {
     border: none;
     cursor: pointer;
     margin-top: 1rem;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
 .btn:hover {

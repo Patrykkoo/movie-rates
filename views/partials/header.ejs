@@ -16,11 +16,11 @@
                 <% if (isAuthenticated) { %>
                     <span class="welcome-user">Witaj, <%= username %>!</span>
                     <a href="/profile" class="btn btn-nav">Mój Katalog</a>
-                    <form action="/logout" method="POST" style="display: inline;">
+                    <form action="/logout" method="POST">
                         <button type="submit" class="btn btn-nav btn-logout">Wyloguj</button>
                     </form>
                 <% } else { %>
-                    <a href="/login" class="btn btn-nav">Logowanie</a>
+                    <a href="/login" class="btn btn-nav">Zaloguj się</a>
                 <% } %>
             </nav>
         </div>
