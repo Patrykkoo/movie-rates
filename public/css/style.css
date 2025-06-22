@@ -55,6 +55,10 @@ footer {
     font-size: 0.9rem;
 }
 
+a {
+    text-decoration: none;
+}
+
 .logo-link {
     text-decoration: none;
     color: white;
@@ -299,8 +303,14 @@ footer {
     color: #fce08d;
 }
 
-.rating-value {
+.star-rating-widget .rating-value {
     display: none;
+}
+
+.movie-stats .rating-value {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1rem;
 }
 
 .rating-summary {
@@ -389,15 +399,13 @@ footer {
     font-weight: bold;
 }
 
-/* Dodaj na końcu pliku style.css */
-
 .card-actions {
     margin-top: auto;
     padding-top: 1rem;
     border-top: 1px solid #444;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; /* Odstęp między przyciskami */
+    gap: 0.5rem;
 }
 
 .btn-secondary {
@@ -454,4 +462,133 @@ footer {
 }
 .tab-pane.active {
     display: block;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #1f1f1f;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.modal-close-btn:hover {
+    color: white;
+}
+
+.modal-layout {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.modal-poster-container {
+    flex-shrink: 0;
+}
+.modal-poster {
+    width: 250px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.modal-info h2 {
+    font-size: 2.2rem;
+    margin-top: 0;
+    color: #e50914;
+}
+
+.modal-actions {
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+}
+.modal-actions .btn {
+    margin-top: 0;
+}
+
+#review-form {
+    margin-top: 1rem;
+}
+.modal-reviews h3 {
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.reviews-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.review-item {
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+}
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-author {
+    font-weight: bold;
+    color: #fff;
+}
+
+.review-stars {
+    color: #ffc107;
+    margin-left: 0.5rem;
+}
+
+.review-text {
+    margin-top: 0.5rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+.movie-stats {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.movie-stats .icon-star {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+.movie-stats .review-count {
+    margin-left: 0.5rem;
 }

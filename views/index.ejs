@@ -2,7 +2,7 @@
 
 <div class="page-intro">
     <h2>Biblioteka Filmów</h2>
-    <p>Przeglądaj filmy i dodawaj je do swojego prywatnego katalogu</p>
+    <p>Przeglądaj filmy i dodawaj je do swojego prywatnego katalogu.</p>
 </div>
 
 <div class="movie-grid">
@@ -14,22 +14,28 @@
                     <h2 class="movie-title"><%= movie.title %></h2>
                     <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
                     
-                    <% if (isAuthenticated) { %>
-                        <div class="card-actions">
-                            <form action="/collection/status/<%= movie.id %>" method="POST">
-                                <input type="hidden" name="status" value="Do obejrzenia">
-                                <button type="submit" class="btn btn-full btn-secondary">Do obejrzenia</button>
-                            </form>
-                            <form action="/collection/status/<%= movie.id %>" method="POST">
-                                <input type="hidden" name="status" value="Obejrzane">
-                                <button type="submit" class="btn btn-full">Obejrzane</button>
-                            </form>
-                        </div>
-                    <% } %>
+                    <div class="movie-stats">
+                        <span class="icon-star"><%- '&#9733;' %></span>
+                        <span class="rating-value"><%= movie.averageRating ? movie.averageRating.toFixed(1) : 'Brak' %></span>
+                        <span class="review-count">(<%= movie.reviewCount %> recenzji)</span>
+                    </div>
+
+                    <div class="card-actions">
+                         <button class="btn btn-full details-btn" data-movie-id="<%= movie.id %>">Szczegóły</button>
+                    </div>
                 </div>
             </div>
         <% }); %>
+    <% } else { %>
+        <p class="empty-collection-info">Brak filmów w bibliotece.</p>
     <% } %>
 </div>
 
+<%- include('partials/movie-modal') %>
 <%- include('partials/footer') %>
+
+<script>
+    const IS_AUTHENTICATED = <%- isAuthenticated %>;
+</script>
+
+<script src="/js/modal.js"></script>

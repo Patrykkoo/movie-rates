@@ -4,6 +4,9 @@ const router = express.Router();
 
 router.post('/collection/status/:id', movieController.postUpdateMovieStatus);
 
+router.get('/movie-details/:id', movieController.getMovieDetails);
+router.post('/movie/:id/review', movieController.postReview);
+
 router.get('/profile', movieController.getProfilePage);
 router.get('/', movieController.getHomePage);
 
