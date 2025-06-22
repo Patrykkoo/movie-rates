@@ -27,15 +27,16 @@
             </div>
         <% }); %>
     <% } else { %>
-        <p class="empty-collection-info">Brak filmów w bibliotece.</p>
+        <%# Dynamiczny komunikat w zależności od tego, czy szukaliśmy %>
+        <% if (locals.searchTerm) { %>
+            <p class="empty-collection-info">Nie znaleziono filmów pasujących do frazy: "<%= searchTerm %>".</p>
+        <% } else { %>
+            <p class="empty-collection-info">Brak filmów w bibliotece.</p>
+        <% } %>
     <% } %>
 </div>
 
 <%- include('partials/movie-modal') %>
 <%- include('partials/footer') %>
-
-<script>
-    const IS_AUTHENTICATED = <%- isAuthenticated %>;
-</script>
 
 <script src="/js/modal.js"></script>

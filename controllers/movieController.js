@@ -2,15 +2,41 @@ const Movie = require('../models/movie');
 const async = require('async');
 
 exports.getHomePage = (req, res) => {
-    Movie.fetchAll((err, movies) => {
-        if (err) {
-            return res.status(500).send("Błąd serwera podczas pobierania filmów.");
+    const searchTerm = req.query.search;
+    const userId = req.session.userId;
+
+    const fetchCollectionAndRender = (movies) => {
+        if (!userId) {
+            return res.render('index', {
+                pageTitle: 'Movierates - Biblioteka Filmów',
+                movies: movies,
+                collectionStatus: new Map(),
+                searchTerm: searchTerm
+            });
         }
-        res.render('index', {
-            pageTitle: 'Movierates - Biblioteka Filmów',
-            movies: movies
+        Movie.fetchCollectionForUser(userId, (err, collectionMovies) => {
+            if (err) return res.status(500).send("Błąd serwera.");
+            const collectionStatus = new Map(collectionMovies.map(movie => [movie.id, movie.status]));
+            res.render('index', {
+                pageTitle: 'Movierates - Wyniki Wyszukiwania',
+                movies: movies,
+                collectionStatus: collectionStatus,
+                searchTerm: searchTerm
+            });
         });
-    });
+    };
+    
+    if (searchTerm && searchTerm.trim() !== '') {
+        Movie.search(searchTerm, (err, movies) => {
+            if (err) return res.status(500).send("Błąd serwera podczas wyszukiwania.");
+            fetchCollectionAndRender(movies);
+        });
+    } else {
+        Movie.fetchAll((err, movies) => {
+            if (err) return res.status(500).send("Błąd serwera podczas pobierania filmów.");
+            fetchCollectionAndRender(movies);
+        });
+    }
 };
 
 exports.getProfilePage = (req, res) => {
@@ -41,23 +67,48 @@ exports.postUpdateMovieStatus = (req, res) => {
     const { status } = req.body;
 
     if (!userId) {
-        return res.status(401).send("Musisz być zalogowany, aby dodać film do kolekcji.");
+        return res.status(401).json({ error: "Musisz być zalogowany." });
     }
 
     Movie.addOrUpdateStatus(userId, movieId, status, (err) => {
         if (err) {
-            return res.status(500).send("Błąd podczas dodawania filmu do kolekcji.");
+            return res.status(500).json({ error: "Błąd podczas dodawania filmu do kolekcji." });
         }
-        res.redirect('/');
+        res.json({ success: true, newStatus: status });
+    });
+};
+
+exports.postRemoveFromCollection = (req, res) => {
+    const userId = req.session.userId;
+    const movieId = req.params.id;
+
+    if (!userId) {
+        return res.status(401).json({ error: "Brak autoryzacji." });
+    }
+
+    Movie.removeFromCollection(userId, movieId, (err, changes) => {
+        if (err) {
+            return res.status(500).json({ error: "Błąd serwera podczas usuwania filmu z kolekcji." });
+        }
+        res.json({ success: true, newStatus: null });
     });
 };
 
 exports.getMovieDetails = (req, res) => {
     const movieId = req.params.id;
+    const userId = req.session.userId;
 
     async.parallel({
         movie: (callback) => Movie.findById(movieId, callback),
-        reviews: (callback) => Movie.fetchReviewsForMovie(movieId, callback)
+        reviews: (callback) => Movie.fetchReviewsForMovie(movieId, callback),
+        status: (callback) => {
+            if (!userId) return callback(null, null);
+            Movie.fetchStatusForUser(userId, movieId, callback);
+        },
+        userReview: (callback) => {
+            if (!userId) return callback(null, null);
+            Movie.fetchUserReviewForMovie(userId, movieId, callback);
+        }
     }, (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Błąd serwera' });
@@ -78,7 +129,7 @@ exports.postReview = (req, res) => {
         return res.status(401).json({ error: 'Musisz być zalogowany.' });
     }
 
-    Movie.addOrUpdateReview(userId, movieId, rating, review_text, (err) => {
+    Movie.addReview(userId, movieId, rating, review_text, (err) => {
         if (err) {
             return res.status(500).json({ error: 'Błąd podczas zapisywania recenzji.' });
         }

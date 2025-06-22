@@ -181,6 +181,20 @@ a {
     background-color: #f6121d;
 }
 
+.btn.btn-added {
+    background-color: #28a745;
+}
+.btn.btn-added:hover {
+    background-color: #218838;
+}
+
+.btn.btn-secondary.btn-added {
+    background-color: #5a6268;
+}
+.btn.btn-secondary.btn-added:hover {
+    background-color: #4e555b;
+}
+
 .btn-nav {
     margin-top: 0;
 }
@@ -367,6 +381,13 @@ a {
     background-color: #777;
 }
 
+.user-review-summary {
+    background-color: #333;
+    border: 1px solid #444;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
 .auth-switch {
     text-align: center;
     margin-top: 1rem;
@@ -525,7 +546,7 @@ a {
 .modal-info h2 {
     font-size: 2.2rem;
     margin-top: 0;
-    color: #e50914;
+    color: white;
 }
 
 .modal-actions {
@@ -540,6 +561,50 @@ a {
 #review-form {
     margin-top: 1rem;
 }
+#review-form h3 {
+    margin-top: 1.5rem;
+}
+#review-form .btn {
+    margin-top: 1rem;
+    width: 100%;
+}
+#review-form label {
+    display: block;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+#review-form .star-rating-widget {
+    margin-bottom: 1rem;
+}
+#review-form textarea {
+    width: 100%;
+    height: 100px;
+    padding: 0.5rem;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.rating-review-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.rating-column {
+    flex: 1;
+}
+
+.review-column {
+    flex: 2;
+}
+
 .modal-reviews h3 {
     border-bottom: 1px solid #444;
     padding-bottom: 0.5rem;
@@ -591,4 +656,48 @@ a {
 }
 .movie-stats .review-count {
     margin-left: 0.5rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    border-radius: 20px;
+    padding: 0.25rem 0.25rem 0.25rem 1rem;
+    flex-grow: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+}
+
+.search-input {
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0;
+}
+
+.search-input::placeholder {
+    color: #888;
+}
+
+.search-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.2s ease;
+}
+
+.search-btn:hover {
+    background-color: #e50914;
 }

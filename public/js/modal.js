@@ -4,12 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalBody = document.getElementById('modal-body');
     const closeBtn = modal.querySelector('.modal-close-btn');
-    
-    document.querySelectorAll('.details-btn').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            const movieId = e.target.dataset.movieId;
-            await openModalForMovie(movieId);
-        });
+    let currentMovieId = null;
+
+    document.body.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('details-btn')) {
+            currentMovieId = e.target.dataset.movieId;
+            await openModalForMovie(currentMovieId);
+        }
     });
 
     closeBtn.addEventListener('click', () => modal.style.display = 'none');
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function generateModalHtml({ movie, reviews }) {
+    function generateModalHtml({ movie, reviews, status, userReview }) {
         let reviewsHtml = '<p>Brak recenzji. Bądź pierwszy!</p>';
         if (reviews && reviews.length > 0) {
             reviewsHtml = reviews.map(r => `
@@ -48,34 +49,67 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
         }
         
-        const userActionsHtml = IS_AUTHENTICATED ? `
-            <div class="modal-actions">
-                <form action="/collection/status/${movie.id}" method="POST" style="display: inline-block;">
-                    <input type="hidden" name="status" value="Do obejrzenia">
-                    <button type="submit" class="btn btn-secondary">Do obejrzenia</button>
-                </form>
-                <form action="/collection/status/${movie.id}" method="POST" style="display: inline-block;">
-                    <input type="hidden" name="status" value="Obejrzane">
-                    <button type="submit" class="btn">Obejrzane</button>
-                </form>
-            </div>
-            <hr>
-            <h3>Twoja Ocena i Recenzja</h3>
-            <form id="review-form">
-                <div class="form-control-full">
-                    <label>Ocena <span class="rating-display-value">0/10</span></label>
-                    <div class="star-rating-widget">
-                        <input type="hidden" name="rating" class="rating-value" value="0">
-                        ${[...Array(10).keys()].map(i => `<span class="star" data-value="${i + 1}">&#9733;</span>`).join('')}
+        const isAuthenticated = document.body.dataset.isAuthenticated === 'true';
+        let userActionsHtml = '<p><a href="/login">Zaloguj się</a>, aby oceniać i dodawać filmy do swojej kolekcji.</p>';
+        
+        if (isAuthenticated) {
+            let actionButtons = '';
+            if (status === 'Obejrzane') {
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-added">✓ Obejrzane (usuń)</button></form>`;
+            } else if (status === 'Do obejrzenia') {
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-secondary btn-added">✓ Do obejrzenia (usuń)</button></form>`;
+            } else {
+                actionButtons = `
+                    <form class="action-form" data-action="/collection/status/${movie.id}" method="POST">
+                        <input type="hidden" name="status" value="Do obejrzenia">
+                        <button type="submit" class="btn btn-secondary">Do obejrzenia</button>
+                    </form>
+                    <form class="action-form" data-action="/collection/status/${movie.id}" method="POST">
+                        <input type="hidden" name="status" value="Obejrzane">
+                        <button type="submit" class="btn">Obejrzane</button>
+                    </form>`;
+            }
+
+            let reviewSectionHtml = '';
+            // LOGIKA WARUNKOWA: Sprawdzamy, czy użytkownik już dodał recenzję
+            if (userReview) {
+                // Jeśli tak, pokazujemy podsumowanie jego recenzji
+                reviewSectionHtml = `
+                    <h3>Twoja Ocena</h3>
+                    <div class="user-review-summary">
+                        <p class="review-author">Oceniłeś na <span class="review-stars">${'&#9733;'.repeat(userReview.rating)}${'&#9734;'.repeat(10 - userReview.rating)}</span></p>
+                        <p class="review-text">${userReview.review_text || '<em>Brak treści recenzji.</em>'}</p>
                     </div>
-                </div>
-                <div class="form-control-full">
-                    <label for="review_text">Recenzja</label>
-                    <textarea name="review_text" rows="4" placeholder="Napisz swoją recenzję..."></textarea>
-                </div>
-                <button type="submit" class="btn">Zapisz recenzję</button>
-            </form>
-        ` : '<p><a href="/login">Zaloguj się</a>, aby oceniać i dodawać filmy do swojej kolekcji.</p>';
+                `;
+            } else {
+                // Jeśli nie, pokazujemy formularz do dodania recenzji
+                reviewSectionHtml = `
+                    <h3>Twoja Ocena i Recenzja</h3>
+                    <form id="review-form">
+                        <div class="rating-review-layout">
+                            <div class="rating-column">
+                                <label>Ocena <span class="rating-display-value">0/10</span></label>
+                                <div class="star-rating-widget">
+                                    <input type="hidden" name="rating" class="rating-value" value="0">
+                                    ${[...Array(10).keys()].map(i => `<span class="star" data-value="${i + 1}">&#9733;</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="review-column">
+                                <label for="review_text">Recenzja</label>
+                                <textarea name="review_text" rows="4" placeholder="Napisz swoją recenzję..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Zapisz recenzję</button>
+                    </form>
+                `;
+            }
+
+            userActionsHtml = `
+                <div class="modal-actions">${actionButtons}</div>
+                <hr>
+                ${reviewSectionHtml}
+            `;
+        }
 
         return `
             <div class="modal-layout">
@@ -91,13 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="modal-reviews">
                 <h3>Recenzje Społeczności</h3>
-                <div class="reviews-list">
-                    ${reviewsHtml}
-                </div>
-            </div>
-        `;
+                <div class="reviews-list">${reviewsHtml}</div>
+            </div>`;
     }
-
+    
     function initializeModalEventListeners(movieId) {
         const starWidget = modal.querySelector('.star-rating-widget');
         if(starWidget) {
@@ -118,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     ratingDisplay.textContent = `${value}/10`;
                     setRating(value);
                 });
-
                 star.addEventListener('mouseover', () => {
                     const hoverValue = star.dataset.value;
                     stars.forEach((s, index) => {
@@ -143,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Musisz wybrać ocenę w gwiazdkach!');
                     return;
                 }
-
                 try {
                     const response = await fetch(`/movie/${movieId}/review`, {
                         method: 'POST',
@@ -151,12 +180,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({ rating, review_text })
                     });
                     if(!response.ok) throw new Error("Błąd zapisu recenzji.");
-                    
                     await openModalForMovie(movieId);
                 } catch (error) {
                     console.error("Błąd wysyłania recenzji:", error);
                 }
             });
         }
+
+        modal.querySelectorAll('.action-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const action = form.dataset.action;
+                const statusInput = form.querySelector('input[name="status"]');
+                const body = statusInput ? JSON.stringify({ status: statusInput.value }) : null;
+
+                try {
+                    const response = await fetch(action, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: body
+                    });
+                    if (!response.ok) throw new Error('Błąd zmiany statusu.');
+                    await openModalForMovie(movieId);
+                } catch (error) {
+                    console.error('Błąd formularza akcji:', error);
+                }
+            });
+        });
     }
 });

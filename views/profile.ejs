@@ -2,7 +2,7 @@
 
 <div class="page-intro">
     <h2>Mój Katalog</h2>
-    <p>Twoje spersonalizowane listy filmów</p>
+    <p>Twoje spersonalizowane listy filmów.</p>
 </div>
 
 <div class="tabs-container">
@@ -21,11 +21,21 @@
                             <div class="movie-details">
                                 <h2 class="movie-title"><%= movie.title %></h2>
                                 <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
+                                
+                                <div class="movie-stats">
+                                    <span class="icon-star"><%- '&#9733;' %></span>
+                                    <span class="rating-value"><%= movie.averageRating ? movie.averageRating.toFixed(1) : 'Brak' %></span>
+                                    <span class="review-count">(<%= movie.reviewCount %> recenzji)</span>
+                                </div>
+
+                                <div class="card-actions">
+                                    <button class="btn btn-full details-btn" data-movie-id="<%= movie.id %>">Szczegóły</button>
+                                </div>
                             </div>
                         </div>
                     <% }); %>
                 <% } else { %>
-                    <p class="empty-collection-info">Brak filmów na liście "Do obejrzenia"</p>
+                    <p class="empty-collection-info">Brak filmów na liście "Do obejrzenia".</p>
                 <% } %>
             </div>
         </div>
@@ -39,18 +49,29 @@
                             <div class="movie-details">
                                 <h2 class="movie-title"><%= movie.title %></h2>
                                 <p class="movie-meta"><%= movie.director %> | <%= movie.year %></p>
+                                
+                                <div class="movie-stats">
+                                    <span class="icon-star"><%- '&#9733;' %></span>
+                                    <span class="rating-value"><%= movie.averageRating ? movie.averageRating.toFixed(1) : 'Brak' %></span>
+                                    <span class="review-count">(<%= movie.reviewCount %> recenzji)</span>
+                                </div>
+
+                                <div class="card-actions">
+                                    <button class="btn btn-full details-btn" data-movie-id="<%= movie.id %>">Szczegóły</button>
+                                </div>
                             </div>
                         </div>
                     <% }); %>
                 <% } else { %>
-                    <p class="empty-collection-info">Brak filmów na liście "Obejrzane"</p>
+                    <p class="empty-collection-info">Brak filmów na liście "Obejrzane".</p>
                 <% } %>
             </div>
         </div>
     </div>
 </div>
 
-
+<%- include('partials/movie-modal') %>
 <%- include('partials/footer') %>
 
 <script src="/js/tabs.js"></script>
+<script src="/js/modal.js"></script>
