@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const crypto = require('crypto');
 
 class Movie {
     static fetchAll(callback) {
@@ -109,6 +110,23 @@ class Movie {
         db.get(sql, [userId, movieId], (err, row) => {
             if (err) return callback(err);
             callback(null, row);
+        });
+    }
+
+    static add(movieData, callback) {
+        const movieId = crypto.randomUUID();
+        const { title, director, year, posterUrl, plot } = movieData;
+
+        const sql = `
+            INSERT INTO movies (id, title, director, year, posterUrl, plot) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        
+        db.run(sql, [movieId, title, director, year, posterUrl, plot], (err) => {
+            if (err) {
+                console.error("Błąd podczas dodawania filmu do bazy:", err.message);
+            }
+            callback(err);
         });
     }
 }

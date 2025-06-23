@@ -136,3 +136,33 @@ exports.postReview = (req, res) => {
         res.status(200).json({ success: true });
     });
 };
+
+exports.getAddMoviePage = (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    res.render('add-movie', {
+        pageTitle: 'Dodaj Film do Bazy'
+    });
+};
+
+exports.postAddMovie = (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    
+    const movieData = {
+        title: req.body.title,
+        director: req.body.director,
+        year: req.body.year,
+        posterUrl: req.body.posterUrl,
+        plot: req.body.plot
+    };
+
+    Movie.add(movieData, (err) => {
+        if (err) {
+            return res.status(500).send("Nie udało się dodać filmu do bazy danych.");
+        }
+        res.redirect('/');
+    });
+};

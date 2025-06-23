@@ -11,4 +11,7 @@ router.post('/movie/:id/review', movieController.postReview);
 router.get('/profile', movieController.getProfilePage);
 router.get('/', movieController.getHomePage);
 
+router.get('/add-movie', movieController.getAddMoviePage);
+router.post('/add-movie', movieController.postAddMovie);
+
 module.exports = router;

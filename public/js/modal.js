@@ -6,21 +6,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = modal.querySelector('.modal-close-btn');
     let currentMovieId = null;
 
+    let pageNeedsReload = false;
+
     document.body.addEventListener('click', async (e) => {
         if (e.target.classList.contains('details-btn')) {
             currentMovieId = e.target.dataset.movieId;
-            await openModalForMovie(currentMovieId);
+            await openModalForMovie(currentMovieId, false);
         }
     });
 
-    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    const closeModalAndRefresh = () => {
+        modal.style.display = 'none';
+        if (pageNeedsReload) {
+            window.location.reload();
+        }
+    };
+
+    closeBtn.addEventListener('click', closeModalAndRefresh);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            modal.style.display = 'none';
+            closeModalAndRefresh();
         }
     });
 
-    async function openModalForMovie(movieId) {
+    async function openModalForMovie(movieId, isRefresh = false) {
+        if (!isRefresh) {
+            pageNeedsReload = false;
+        }
+        
         try {
             const response = await fetch(`/movie-details/${movieId}`);
             if (!response.ok) throw new Error('Nie udało się pobrać danych filmu.');
@@ -55,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isAuthenticated) {
             let actionButtons = '';
             if (status === 'Obejrzane') {
-                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-added">✓ Obejrzane</button></form>`;
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-added">✓ Obejrzane (usuń)</button></form>`;
             } else if (status === 'Do obejrzenia') {
-                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-secondary btn-added">✓ Do obejrzenia</button></form>`;
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-secondary btn-added">✓ Do obejrzenia (usuń)</button></form>`;
             } else {
                 actionButtons = `
                     <form class="action-form" data-action="/collection/status/${movie.id}" method="POST">
@@ -77,8 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="user-review-summary">
                         <p class="review-author">Oceniłeś na <span class="review-stars">${'&#9733;'.repeat(userReview.rating)}${'&#9734;'.repeat(10 - userReview.rating)}</span></p>
                         <p class="review-text">${userReview.review_text || '<em>Brak treści recenzji.</em>'}</p>
-                    </div>
-                `;
+                    </div>`;
             } else {
                 reviewSectionHtml = `
                     <h3>Twoja Ocena i Recenzja</h3>
@@ -97,15 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </div>
                         <button type="submit" class="btn">Zapisz recenzję</button>
-                    </form>
-                `;
+                    </form>`;
             }
 
             userActionsHtml = `
                 <div class="modal-actions">${actionButtons}</div>
                 <hr>
-                ${reviewSectionHtml}
-            `;
+                ${reviewSectionHtml}`;
         }
 
         return `
@@ -127,6 +137,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function initializeModalEventListeners(movieId) {
+        const reviewForm = modal.querySelector('#review-form');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const rating = reviewForm.querySelector('.rating-value').value;
+                const review_text = reviewForm.querySelector('textarea').value;
+
+                if (rating === '0') {
+                    alert('Musisz wybrać ocenę w gwiazdkach!');
+                    return;
+                }
+                try {
+                    const response = await fetch(`/movie/${movieId}/review`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ rating, review_text })
+                    });
+                    if(!response.ok) throw new Error("Błąd zapisu recenzji.");
+                    
+                    pageNeedsReload = true;
+                    await openModalForMovie(movieId, true); 
+                } catch (error) {
+                    console.error("Błąd wysyłania recenzji:", error);
+                }
+            });
+        }
+
+        modal.querySelectorAll('.action-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const action = form.dataset.action;
+                const statusInput = form.querySelector('input[name="status"]');
+                const body = statusInput ? JSON.stringify({ status: statusInput.value }) : null;
+
+                try {
+                    const response = await fetch(action, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: body
+                    });
+                    if (!response.ok) throw new Error('Błąd zmiany statusu.');
+
+                    pageNeedsReload = true;
+                    await openModalForMovie(movieId, true);
+                } catch (error) {
+                    console.error('Błąd formularza akcji:', error);
+                }
+            });
+        });
+
         const starWidget = modal.querySelector('.star-rating-widget');
         if(starWidget) {
             const stars = starWidget.querySelectorAll('.star');
@@ -158,51 +218,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 stars.forEach(s => s.classList.remove('hover'));
             });
         }
-        
-        const reviewForm = modal.querySelector('#review-form');
-        if (reviewForm) {
-            reviewForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const rating = reviewForm.querySelector('.rating-value').value;
-                const review_text = reviewForm.querySelector('textarea').value;
-
-                if (rating === '0') {
-                    alert('Musisz wybrać ocenę w gwiazdkach!');
-                    return;
-                }
-                try {
-                    const response = await fetch(`/movie/${movieId}/review`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ rating, review_text })
-                    });
-                    if(!response.ok) throw new Error("Błąd zapisu recenzji.");
-                    await openModalForMovie(movieId);
-                } catch (error) {
-                    console.error("Błąd wysyłania recenzji:", error);
-                }
-            });
-        }
-
-        modal.querySelectorAll('.action-form').forEach(form => {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const action = form.dataset.action;
-                const statusInput = form.querySelector('input[name="status"]');
-                const body = statusInput ? JSON.stringify({ status: statusInput.value }) : null;
-
-                try {
-                    const response = await fetch(action, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: body
-                    });
-                    if (!response.ok) throw new Error('Błąd zmiany statusu.');
-                    await openModalForMovie(movieId);
-                } catch (error) {
-                    console.error('Błąd formularza akcji:', error);
-                }
-            });
-        });
     }
 });
