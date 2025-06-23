@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isAuthenticated) {
             let actionButtons = '';
             if (status === 'Obejrzane') {
-                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-added">✓ Obejrzane (usuń)</button></form>`;
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-added">✓ Obejrzane</button></form>`;
             } else if (status === 'Do obejrzenia') {
-                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-secondary btn-added">✓ Do obejrzenia (usuń)</button></form>`;
+                actionButtons = `<form class="action-form" data-action="/collection/remove/${movie.id}" method="POST"><button type="submit" class="btn btn-secondary btn-added">✓ Do obejrzenia</button></form>`;
             } else {
                 actionButtons = `
                     <form class="action-form" data-action="/collection/status/${movie.id}" method="POST">
@@ -71,9 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let reviewSectionHtml = '';
-            // LOGIKA WARUNKOWA: Sprawdzamy, czy użytkownik już dodał recenzję
             if (userReview) {
-                // Jeśli tak, pokazujemy podsumowanie jego recenzji
                 reviewSectionHtml = `
                     <h3>Twoja Ocena</h3>
                     <div class="user-review-summary">
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             } else {
-                // Jeśli nie, pokazujemy formularz do dodania recenzji
                 reviewSectionHtml = `
                     <h3>Twoja Ocena i Recenzja</h3>
                     <form id="review-form">
