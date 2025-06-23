@@ -33,20 +33,20 @@ Do uruchomienia aplikacji wymagany jest **Node.js** (zalecana wersja v18.x lub n
     npm install
     ```
 
-3.  **Inicjalizacja bazy danych (opcjonalnie)**
+3.  **Inicjalizacja bazy danych (opcjonalnie)**  
     Aby obsługiwać aplikację na "czystej" bazie danych, należy usunąć plik **/data/movierates.db** oraz jednorazowo ją zainicjować. Uruchom poniższą komendę w głównym folderze projektu:
     ```bash
     node database-setup.js
     ```
     *Ten skrypt stworzy plik `movierates.db` i wypełni go początkowymi danymi filmów z pliku JSON.*
 
-4.  **Uruchomienie serwera**
+4.  **Uruchomienie serwera**  
     Aby uruchomić serwer w trybie deweloperskim (z automatycznym przeładowywaniem po zmianach), użyj komendy:
     ```bash
     npm start
     ```
 
-5.  **Dostęp do aplikacji**
+5.  **Dostęp do aplikacji**  
     Aplikacja będzie dostępna w przeglądarce pod adresem: `http://localhost:3001`.
 
 ## Wykorzystane Biblioteki Zewnętrzne
