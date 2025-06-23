@@ -27,7 +27,7 @@ Do uruchomienia aplikacji wymagany jest **Node.js** (zalecana wersja v18.x lub n
     cd movie-rates
     ```
 
-2.  **Instalacja zależności**
+2.  **Instalacja zależności**  
     W głównym folderze projektu uruchom komendę, aby zainstalować wszystkie wymagane biblioteki:
     ```bash
     npm install
