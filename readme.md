@@ -23,7 +23,7 @@ Do uruchomienia aplikacji wymagany jest **Node.js** (zalecana wersja v18.x lub n
 
 1.  **Klonowanie repozytorium**
     ```bash
-    git clone https://github.com/Patrykkoo/movie-rates
+    git clone https://github.com/Patrykkoo/movie-rates.git
     cd movie-rates
     ```
 
