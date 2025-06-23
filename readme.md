@@ -82,7 +82,7 @@ Aplikacja jest zorganizowana zgodnie ze wzorcem **Model-View-Controller (MVC)**.
 * **`database-setup.js`**: Jednorazowy skrypt do inicjalizacji schematu bazy danych i migracji początkowych danych z pliku JSON.
 * **`server.js`**: Główny plik startowy aplikacji, który łączy wszystkie elementy.
 
-## Testowanie aplikacji
+## Testowanie Aplikacji
 
 W celu testowania aplikacji zostało utworzonych trzech użytkowników, korzystających z wszystkich funkcjonalności biblioteki filmów.
 
