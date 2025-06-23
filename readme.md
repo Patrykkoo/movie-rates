@@ -81,3 +81,14 @@ Aplikacja jest zorganizowana zgodnie ze wzorcem **Model-View-Controller (MVC)**.
 * **`/views`**: Szablony EJS odpowiedzialne za warstwę prezentacji.
 * **`database-setup.js`**: Jednorazowy skrypt do inicjalizacji schematu bazy danych i migracji początkowych danych z pliku JSON.
 * **`server.js`**: Główny plik startowy aplikacji, który łączy wszystkie elementy.
+
+## Testowanie aplikacji
+
+W celu testowania aplikacji zostało utworzonych trzech użytkowników, korzystających z wszystkich funkcjonalności biblioteki filmów.
+
+**Administrator z możliwością dodawania nowych filmów do biblioteki:** 
+* **Login:** root, **Hasło:** root
+
+**Testowi użytkownicy z przykładowymi recenzjami oraz filmami w katalogu:**
+* **Login:** Test1, **Hasło:** Test1
+* **Login:** Test2, **Hasło:** Test2
