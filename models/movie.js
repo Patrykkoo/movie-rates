@@ -58,7 +58,7 @@ class Movie {
         db.all(sql, [movieId], (err, rows) => callback(err, rows));
     }
 
-    static addOrUpdateReview(userId, movieId, rating, review_text, callback) {
+    static addReview(userId, movieId, rating, review_text, callback) {
         const checkSql = "SELECT id FROM reviews WHERE user_id = ? AND movie_id = ?";
         db.get(checkSql, [userId, movieId], (err, row) => {
             if (err) return callback(err);
