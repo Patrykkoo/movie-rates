@@ -1,96 +1,83 @@
-# Movierates - Kolekcja Filmów
+# Movierates - Katalog Kolekcji Filmów
 
 ## Opis Projektu
 
-**Movierates** to aplikacja internetowa napisana w Node.js, zrealizowana zgodnie z założeniami wzorca architektonicznego MVC (Model-View-Controller) oraz wykorzystująca renderowanie po stronie serwera (SSR). Celem projektu jest umożliwienie użytkownikowi przeglądania obszernej biblioteki filmów oraz tworzenia i zarządzania własną, spersonalizowaną kolekcją. Użytkownik może dodawać filmy do swojego katalogu, oceniać je, dodawać statusy oglądania oraz pisać krótkie recenzje.
+**Movierates** to aplikacja internetowa napisana w Node.js, zrealizowana zgodnie z założeniami wzorca architektonicznego MVC, wykorzystując Server-Side Rendering (SSR). Aplikacja jest wieloużytkownikową platformą zintegrowaną z bazą danych SQLite, która służy do przeglądania filmów, recenzowania ich i tworzenia własnych kolekcji.
 
 ## Lista i Opis Funkcjonalności
 
-* **Przeglądanie Głównej Biblioteki Filmów:** Aplikacja wyświetla listę wszystkich filmów dostępnych w globalnej bazie danych (`movieDB.json`).
-* **Tworzenie Prywatnej Kolekcji:** Użytkownik ma możliwość dodania dowolnego filmu z głównej biblioteki do swojego prywatnego katalogu.
-* **Podstrona Profilu:** Dedykowana podstrona `/profile`, na której wyświetlane są tylko filmy dodane przez użytkownika do jego kolekcji.
-* **Ocenianie Filmów:** W swoim katalogu użytkownik może ocenić film w skali 1-10 za pomocą interaktywnego systemu gwiazdek. Ocena jest zapisywana i widoczna w podsumowaniu.
-* **Dodawanie Recenzji i Statusu:** Do każdego filmu w kolekcji można dodać własną recenzję tekstową oraz ustawić status oglądania ("Do obejrzenia", "W trakcie", "Obejrzany").
-* **Edycja Danych w Kolekcji:** Użytkownik może w dowolnym momencie edytować swoją ocenę, recenzję i status dla filmów w swoim katalogu.
-* **Trwałość Danych:** Wszystkie dane – zarówno globalna biblioteka, jak i kolekcja użytkownika są trwale przechowywane w plikach JSON na serwerze.
-* **Dodawanie Filmów do Globalnej Bazy:** Aplikacja wciąż posiada funkcjonalność dodawania nowych filmów do głównej biblioteki poprzez formularz na podstronie `/add-movie`.
+* **System rejestracji i logowania:** Użytkownicy mogą tworzyć własne konta. Proces rejestracji jest zabezpieczony haszowaniem haseł (`bcrypt`), a zalogowani użytkownicy są utrzymywani w systemie dzięki sesjom (`express-session`).
+* **Biblioteka filmów:** Strona główna prezentuje ogólnodostępną listę filmów, wyświetlając dla każdego z nich podgląd **średniej oceny** oraz **liczbę recenzji** dodanych przez społeczność.
+* **Wyszukiwarka:** Aplikacja posiada wyszukiwarkę, pozwalającą na znajdowanie filmów po tytule, jego fragmencie lub danych reżysera.
+* **Szczegółowe menu filmów:** Po kliknięciu na dowolny film otwiera się okno, w którym znajdują się:
+    * Szczegółowe informacje o filmie.
+    * Lista recenzji od innych użytkowników.
+    * Formularz pozwalający zalogowanym użytkownikom (inaczej informuje o konieczności zalogowania się) na dodanie własnej oceny i recenzji. 
+    * Przyciski do zarządzania własną kolekcją, dodając wybrane filmy do kolekcji: **"Do obejrzenia"**, **"Obejrzane"**.
+* **Katalog użytkownika:** Podstrona `/profile` prezentuje kolekcje zalogowanego użytkownika, wykorzystując interfejs z zakładkami do przełączania się między listami.
+* **Panel dodawania filmów:** Możliwość dodawania nowych filmów do globalnej bazy danych jest ograniczona tylko dla administratora o nazwie **"root"**.
 
 ## Instrukcja Uruchomienia Aplikacji
 
 Do uruchomienia aplikacji wymagany jest **Node.js** (zalecana wersja v18.x lub nowsza) oraz menedżer pakietów **npm**.
 
-1.  **Klonowanie Repozytorium**
+1.  **Klonowanie repozytorium**
     ```bash
     git clone https://github.com/Patrykkoo/movie-rates
     cd movie-rates
     ```
 
-2.  **Instalacja Zależności**
+2.  **Instalacja zależności**
     W głównym folderze projektu uruchom komendę, aby zainstalować wszystkie wymagane biblioteki:
     ```bash
     npm install
     ```
 
-3.  **Uruchomienie Serwera**
+3.  **Inicjalizacja bazy danych (opcjonalnie)**
+    Aby obsługiwać aplikację na "czystej" bazie danych, należy usunąć plik **/data/movierates.db** oraz jednorazowo ją zainicjować. Uruchom poniższą komendę w głównym folderze projektu:
+    ```bash
+    node database-setup.js
+    ```
+    *Ten skrypt stworzy plik `movierates.db` i wypełni go początkowymi danymi filmów z pliku JSON.*
+
+4.  **Uruchomienie serwera**
     Aby uruchomić serwer w trybie deweloperskim (z automatycznym przeładowywaniem po zmianach), użyj komendy:
     ```bash
     npm start
     ```
 
-4.  **Dostęp do Aplikacji**
+5.  **Dostęp do aplikacji**
     Aplikacja będzie dostępna w przeglądarce pod adresem: `http://localhost:3001`.
 
 ## Wykorzystane Biblioteki Zewnętrzne
 
-* **Express.js:** Minimalistyczny i elastyczny framework webowy dla Node.js, używany do budowy serwera, obsługi żądań HTTP i routingu.
-* **EJS (Embedded JavaScript templating):** Silnik szablonów, który pozwala na generowanie dynamicznego kodu HTML po stronie serwera poprzez osadzanie w nim logiki JavaScript.
-* **Nodemon:** Narzędzie deweloperskie, które automatycznie restartuje serwer Node.js po wykryciu zmian w plikach projektu, co znacznie przyspiesza proces tworzenia aplikacji.
+* **Express.js:** Framework webowy dla Node.js, używany do budowy serwera i routingu.
+* **EJS:** Silnik szablonów do generowania dynamicznego kodu HTML.
+* **Nodemon:** Narzędzie deweloperskie do automatycznego restartowania serwera.
+* **sqlite3:** Sterownik umożliwiający aplikacji komunikację z plikową bazą danych SQLite.
+* **bcrypt:** Biblioteka do bezpiecznego haszowania i weryfikacji haseł.
+* **express-session:** Middleware do zarządzania sesjami użytkowników (np. "pamiętania" o zalogowaniu).
+* **async:** Biblioteka pomocnicza do zarządzania wieloma asynchronicznymi operacjami na bazie danych.
 
 ## Struktura Aplikacji
 
 Aplikacja jest zorganizowana zgodnie ze wzorcem **Model-View-Controller (MVC)**.
 
-* **`/models/movie.js`**
-    * **Model:** Warstwa danych aplikacji. Odpowiada za całą logikę operacji na plikach `movieDB.json` (globalna biblioteka) i `user-collection.json` (kolekcja użytkownika). Zawiera metody do odczytywania, zapisywania, aktualizowania i wyszukiwania danych.
-
-* **`/views`**
-    * **Widoki:** Warstwa prezentacji, odpowiedzialna za interfejs użytkownika. Są to pliki `.ejs`, które zawierają szablony HTML z osadzoną logiką do dynamicznego wyświetlania danych przekazanych z kontrolera.
-    * `index.ejs`: Widok strony głównej z biblioteką filmów.
-    * `profile.ejs`: Widok katalogu użytkownika.
-    * `add-movie.ejs`: Widok formularza dodawania filmów.
-    * `partials/header.ejs`, `partials/footer.ejs`: Reużywalne fragmenty widoków dla zachowania spójności interfejsu.
-
-* **`/controllers/movieController.js`**
-    * **Kontroler:** Pośrednik między modelem a widokiem. Odbiera żądania HTTP zdefiniowane w routerze, komunikuje się z modelem w celu przetworzenia danych, a następnie wywołuje odpowiedni widok, przekazując mu potrzebne informacje.
-
-* **`/routes/movieRoutes.js`**
-    * **Router:** Definiuje wszystkie ścieżki (URL) aplikacji i mapuje je do odpowiednich funkcji w kontrolerze. Oddziela logikę routingu od głównego pliku serwera.
-
-* **`/public`**
-    * Folder na zasoby statyczne, dostępne po stronie klienta (frontend).
+* **`/config/database.js`**: Centralny moduł zarządzający połączeniem z bazą danych SQLite.
+* **`/controllers`**:
+    * `movieController.js`: Obsługuje logikę związaną z wyświetlaniem filmów, profili i obsługą modala.
+    * `authController.js`: Zarządza logiką rejestracji, logowania i wylogowywania użytkowników.
+* **`/data/movierates.db`**: Plik bazy danych SQLite, przechowujący wszystkie dane aplikacji (użytkowników, filmy, recenzje, kolekcje).
+* **`/middleware/authMiddleware.js`**: Zawiera funkcje `isAdmin`, do kontroli dostępu do określonych ścieżek.
+* **`/models`**:
+    * `movie.js`: Model odpowiedzialny za wszystkie operacje na bazie danych związane z filmami, recenzjami i kolekcjami.
+    * `user.js`: Model zarządzający operacjami na tabeli użytkowników (tworzenie, wyszukiwanie, weryfikacja hasła).
+* **`/public`**: Folder na frontend.
     * `/css/style.css`: Główny arkusz stylów aplikacji.
-    * `/js/star-rating.js`: Skrypt JavaScript do obsługi interaktywnego oceniania gwiazdkami.
-
-* **`/data`**
-    * Folder pełniący rolę bazy danych.
-    * `movieDB.json`: Globalna baza filmów.
-    * `user-collection.json`: Baza przechowująca prywatną kolekcję użytkownika.
-
-* **`server.js`**
-    * Główny plik startowy aplikacji. Inicjalizuje serwer Express, konfiguruje silnik widoków, podłącza router oraz uruchamia nasłuchiwanie na określonym porcie.
-
-## Przykładowe Dane Wejściowe 
-
-Aplikacja wykorzystuje formularze do wprowadzania danych przez użytkownika.
-
-* **Formularz dodawania filmu do bazy (`/add-movie`):**
-    * **Tytuł:** `string` (np. "Incepcja")
-    * **Reżyser:** `string` (np. "Christopher Nolan")
-    * **Rok premiery:** `number` (np. 2010)
-    * **URL do plakatu:** `string` (URL)
-    * **Krótki opis fabuły:** `string` (tekst)
-
-* **Formularz edycji w katalogu użytkownika (`/profile`):**
-    * **Status:** `string` (wybór z listy: "Do obejrzenia", "W trakcie", "Obejrzany")
-    * **Ocena:** `number` (od 1 do 10, ustawiane za pomocą gwiazdek)
-    * **Recenzja:** `string` (tekst)
+    * `/js/modal.js`, `/star-rating.js`, `/js/tabs.js`: Skrypty JavaScript odpowiedzialne za interaktywność interfejsu.
+* **`/routes`**:
+    * `movieRoutes.js`: Definiuje URL związane z filmami i profilem.
+    * `authRoutes.js`: Definiuje URL związane z procesem autoryzacji użytkowników.
+* **`/views`**: Szablony EJS odpowiedzialne za warstwę prezentacji.
+* **`database-setup.js`**: Jednorazowy skrypt do inicjalizacji schematu bazy danych i migracji początkowych danych z pliku JSON.
+* **`server.js`**: Główny plik startowy aplikacji, który łączy wszystkie elementy.
